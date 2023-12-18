@@ -4,9 +4,11 @@ import com.kia.distributedlock.annotation.RedisLock;
 import com.kia.distributedlock.service.LockService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("api/v2/")
 public class TestControllerWithAnnotation {
 //    private final LockService lockService;
 //    public TestControllerWithAnnotation(LockService lockService) {
