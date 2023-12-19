@@ -8,8 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class TestService {
-    @RedisLock(key="test" ,timeout = 30L , timeUnit = TimeUnit.SECONDS)
-    public String testLock(String key){
+    @RedisLock(key="test" ,timeout = 15000L , timeUnit = TimeUnit.MILLISECONDS)
+    public String testLock(String key) throws InterruptedException {
+        Thread.sleep(2000);
         return "test lock with annotation ... " + key;
     }
 }

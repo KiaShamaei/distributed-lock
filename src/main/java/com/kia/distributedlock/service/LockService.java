@@ -16,7 +16,7 @@ public class LockService {
     public void performWithLock(String lockKey) throws InterruptedException {
         if (lock.acquireLock(lockKey, 15000, TimeUnit.MILLISECONDS)) {
             log.info("Lock acquired. Operation started.");
-            Thread.sleep(200);
+            Thread.sleep(2000);
             log.info("Operation completed.");
             // if you want, you can release lock.
             // lock.releaseLock(lockKey);

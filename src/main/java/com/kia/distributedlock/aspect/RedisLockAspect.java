@@ -1,13 +1,18 @@
 package com.kia.distributedlock.aspect;
 
 import com.kia.distributedlock.annotation.RedisLock;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
-
+@Component
+@Aspect
+@Slf4j
 public class RedisLockAspect {
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -29,10 +34,11 @@ public class RedisLockAspect {
         try {
             acquired = redisTemplate.opsForValue().setIfAbsent(lockKey, "locked", lockTimeout, timeUnit);
             if (acquired) {
-                return joinPoint.proceed();
+                log.info("Lock acquired. Operation started.");
             } else {
-                throw new RuntimeException("Failed to acquire lock for method: " + joinPoint.getSignature().toShortString());
+                log.error("Failed to acquire lock. Resource is busy.");
             }
+            return joinPoint.proceed();
         } finally {
             if (acquired) {
                 redisTemplate.delete(lockKey);
